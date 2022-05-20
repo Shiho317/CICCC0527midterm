@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 
 const PostSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -18,4 +22,4 @@ const PostSchema = new mongoose.Schema(
   {timestamps: true}
 )
 
-module.exports = mongoose.model("POST", PostSchema)
+module.exports = mongoose.model("Post", PostSchema)
