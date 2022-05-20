@@ -3,13 +3,17 @@ const app = express()
 const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const path = require('path')
+const userRouter = require('./src/routes/Users')
+const postRouter = require('./src/routes/Posts')
 
 dotenv.config()
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'templates'))
+app.set('views', path.join(__dirname, '/src/templates'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json())
+app.use("/", postRouter)
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
