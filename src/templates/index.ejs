@@ -1,0 +1,24 @@
+<%- include("_header") -%>
+
+<h1>Post (<%= model.length %>)</h1>
+
+<% for(const post of model){ %>
+<div class="card mb-3">
+  <img src="<%= post.image %>" class="card-img-top" alt="post" />
+  <div class="card-body">
+    <h5 class="card-title"><%= post.title %></h5>
+    <p class="card-text"><%= post.contents %></p>
+    <p class="card-text">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </p>
+  </div>
+  <a href="/update/<%= post.ID %>" class="btn btn-sm btn-warning">
+    <i class="far fa-edit"></i>
+  </a>
+  <a href="/delete/<%= post.ID %>?_method=DELETE" class="btn btn-sm btn-danger">
+    <i class="far fa-trash"></i>
+  </a>
+  <i class="far fa-heart"></i>
+</div>
+
+<% } %> <%- include("_footer") -%>
