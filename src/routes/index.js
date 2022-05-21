@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Post = require("../model/Post");
+const Favorite = require("../model/Favorite");
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const ObjectId = require("mongodb").ObjectId;
@@ -10,13 +11,37 @@ let currUser = {
   email: "",
 };
 
+router.use((req, res, next) => {
+  if (req.query._method === "DELETE") {
+    console.log("DELETE");
+    req.method = "DELETE";
+    req.url = req.path;
+  }
+  next();
+});
+
 router.get("/", async (req, res) => {
-  try {
-    const posts = await Post.find();
-    // console.log(posts)
-    res.render("index", { model: posts });
-  } catch (error) {
-    console.log(error);
+  if (currUser.email) {
+    try {
+      const posts = await Post.find();
+      // const postsFiltered = posts.map(post => {
+      //   return {
+      //     username: post.username,
+      //     title: post.title,
+      //     contents: post.contents,
+      //     image: post.image,,
+      //     id: ObjectId.va
+      //   }
+      // })
+      const findFavorite = await Favorite.find({
+        email: currUser.email,
+      });
+      res.render("index", { model: posts, favs: findFavorite });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    res.redirect("/login");
   }
 });
 
@@ -32,8 +57,8 @@ router.post("/create", async (req, res) => {
       contents: req.body.Contents,
       image: req.body.Image,
     });
-    const post = await newPost.save();
-    res.render("/");
+    await newPost.save();
+    res.redirect("/");
   } catch (error) {
     console.log(error);
   }
@@ -64,6 +89,30 @@ router.post("/update/:id", async (req, res) => {
   ).then((result) => {
     res.redirect("/");
   });
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  const objId = new ObjectId(id);
+  await Post.findOneAndDelete({
+    _id: objId,
+  }).then((result) => {
+    res.redirect("/");
+  });
+});
+
+router.get("/favorite/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const newFavorite = new Favorite({
+      id,
+      user: currUser.email,
+    });
+    await newFavorite.save();
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.get("/login", (req, res) => {

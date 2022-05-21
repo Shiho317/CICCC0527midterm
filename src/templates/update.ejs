@@ -2,14 +2,14 @@
 
 <h1>Update Post</h1>
 
-<form action="/create" method="post">
+<form action="/update/<%= model._id %>" method="post">
   <div class="form-horizontal">
 
       <%- include('_editor') %>
 
       <div class="form-group row">
           <div class="d-flex justify-content-end gap-4">
-              <input type="submit" value="Create" class="btn btn-default btn-success">
+              <input type="submit" value="Update" class="btn btn-default btn-success">
               <a href="/" class="btn btn-outline-dark">Cancel</a>
           </div>
       </div>

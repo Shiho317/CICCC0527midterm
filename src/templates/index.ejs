@@ -3,7 +3,7 @@
 <h1>Post (<%= model.length %>)</h1>
 
 <% for(const post of model){ %>
-<div class="card mb-3">
+<div class="card p-2 mb-3">
   <img src="<%= post.image %>" class="card-img-top" alt="post" />
   <div class="card-body">
     <h5 class="card-title"><%= post.title %></h5>
@@ -12,13 +12,25 @@
       <small class="text-muted">Last updated 3 mins ago</small>
     </p>
   </div>
-  <a href="/update/<%= post._id %>" class="btn btn-sm btn-warning">
-    <i class="far fa-edit"></i>
-  </a>
-  <a href="/delete/<%= post._id %>?_method=DELETE" class="btn btn-sm btn-danger">
-    <i class="far fa-trash"></i>
-  </a>
-  <i class="far fa-heart"></i>
+  <div class="d-flex justify-content-between align-items-center px-4">
+    <% if(favs.map(fav => fav.id).includes(post._id.valueOf())){ %>
+      <a href="/favorite/<%= post._id %>" class="btn btn-sm">
+        <i class="bi bi-heart-fill"></i>
+      </a>
+    <% }else{ %>
+      <a href="#" class="btn btn-sm">
+        <i class="bi bi-heart"></i>
+      </a>
+    <% } %>
+    <div class="d-flex gap-4 justify-content-end">
+      <a href="/update/<%= post._id %>" class="btn btn-sm">
+        <i class="bi bi-pencil-square"></i>
+      </a>
+      <a href="/delete/<%= post._id %>?_method=DELETE" class="btn btn-sm">
+        <i class="bi bi-trash3"></i>
+      </a>
+    </div>
+  </div>
 </div>
-
-<% } %> <%- include("_footer") -%>
+<% } %> 
+<%- include("_footer") -%>
