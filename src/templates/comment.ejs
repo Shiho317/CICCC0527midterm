@@ -1,0 +1,67 @@
+<%- include("_header") %>
+<div class="d-flex flex-column">
+  <div class="card p-2 mb-3 mt-2">
+    <div class="card-body">
+      <h5 class="card-title"><%= model.title %></h5>
+      <p class="card-text"><%= model.contents %></p>
+      <p class="card-text">
+        <small class="text-muted">
+          <% const ts = model.updatedAt.toString().split(' ') %> <% const time =
+          ts.slice(0, 5).join(' ') %> <%= time %>
+        </small>
+      </p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center px-4">
+      <% if(favs.map(fav => fav.id).includes(model._id.valueOf())){ %>
+      <a href="/deletefav/<%= model._id %>" class="btn btn-sm">
+        <i class="bi bi-heart-fill"></i>
+      </a>
+      <% }else{ %>
+      <a href="/favorite/<%= model._id %>" class="btn btn-sm">
+        <i class="bi bi-heart"></i>
+      </a>
+      <% } %>
+      <div class="d-flex gap-4 justify-content-end">
+        <a href="/comment/<%= model._id %>" class="btn btn-sm">
+          <i class="bi bi-chat-left-dots"></i>
+          <%= comments.length %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="w-100">
+    <% for(const comment of comments){ %>
+    <div class="w-100 border-bottom border-1 border-black-50 py-2">
+      <p
+        class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white"
+        style="height: 40px; width: 40px"
+      >
+        <%= comment.username.split('')[0].toUpperCase() %>
+      </p>
+      <p><%= comment.comment %></p>
+      <div class="d-flex justify-content-end align-items-start gap-4">
+        <p class="text-black-50">@<%= comment.username %></p>
+        <a href="/dlcomment/<%= comment._id %>?_method=DELETE" class="btn btn-sm text-black-50">
+          <i class="bi bi-trash3"></i>
+        </a>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<form
+  action="/comment/<%= model._id %>"
+  method="post"
+  class="w-100 d-flex mb-2 mt-2"
+>
+  <input
+    type="text"
+    name="Comment"
+    placeholder="send a comment"
+    class="w-100 border border-white"
+  />
+  <button type="submit" class="btn btn-default btn-success">Send</button>
+</form>
+
+<%- include("_footer") %>

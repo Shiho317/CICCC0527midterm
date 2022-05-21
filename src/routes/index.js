@@ -3,6 +3,7 @@ const Post = require("../model/Post");
 const Favorite = require("../model/Favorite");
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
+const Comment = require("../model/Comment");
 const ObjectId = require("mongodb").ObjectId;
 
 let currUser = {
@@ -177,5 +178,44 @@ router.get("/logout", (req, res) => {
   };
   res.redirect("/");
 });
+
+router.get("/comment/:id", async(req, res) => {
+  const id = req.params.id;
+  const objId = new ObjectId(id);
+  const choosePost = await Post.findOne({
+    _id: objId,
+  })
+  const comments = await Comment.find({
+    id
+  })
+  const findFavorite = await Favorite.find({
+    email: currUser.email
+  });
+  res.render("comment", { model: choosePost, comments, favs: findFavorite})
+})
+
+router.post("/comment/:id", async(req, res) => {
+  const id = req.params.id;
+  try {
+    const newComment = new Comment({
+      id,
+      username: currUser.username,
+      comment: req.body.Comment
+    });
+    await newComment.save();
+    res.redirect(`/comment/${req.params.id}`)
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+router.delete("/dlcomment/:id", async(req, res) => {
+  const id = req.params.id;
+  const objId = new ObjectId(id);
+  const deletedOne = await Comment.findOneAndDelete({
+    _id: objId,
+  })
+  res.redirect(`/comment/${deletedOne.id}`);
+})
 
 module.exports = router;
