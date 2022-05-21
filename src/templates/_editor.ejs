@@ -1,17 +1,37 @@
 <div class="form-group row">
   <div class="input-group mb-3">
-    <span class="input-group-text" id="inputGroup-sizing-default">username</span>
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="Username" value="<%= username %>">
+    <span class="input-group-text" id="inputGroup-sizing-default"
+      >username</span
+    >
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default"
+      name="Username"
+      value="<%= username %>"
+    />
   </div>
   <div class="input-group mb-3">
     <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="Title" value="<%= model.title %>">
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default"
+      name="Title"
+      value="<%= model.title %>"
+    />
   </div>
   <div class="input-group mb-3">
     <span class="input-group-text">Your Post Here...</span>
-    <textarea class="form-control" aria-label="With textarea" rows="15" name="Contents"><%= model.contents %></textarea>
-  </div>
-  <div class="input-group mb-3">
-    <input type="file" name="Image" value="<%= model.image %>">
+    <textarea
+      class="form-control"
+      aria-label="With textarea"
+      rows="15"
+      name="Contents"
+    >
+<%= model.contents %></textarea
+    >
   </div>
 </div>

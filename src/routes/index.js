@@ -24,15 +24,6 @@ router.get("/", async (req, res) => {
   if (currUser.email) {
     try {
       const posts = await Post.find();
-      // const postsFiltered = posts.map(post => {
-      //   return {
-      //     username: post.username,
-      //     title: post.title,
-      //     contents: post.contents,
-      //     image: post.image,,
-      //     id: ObjectId.va
-      //   }
-      // })
       const findFavorite = await Favorite.find({
         email: currUser.email,
       });
@@ -55,7 +46,6 @@ router.post("/create", async (req, res) => {
       username: req.body.Username,
       title: req.body.Title,
       contents: req.body.Contents,
-      image: req.body.Image,
     });
     await newPost.save();
     res.redirect("/");
@@ -115,6 +105,15 @@ router.get("/favorite/:id", async (req, res) => {
   }
 });
 
+router.get("/deletefav/:id", async (req, res) => {
+  const id = req.params.id;
+  await Favorite.findOneAndDelete({
+    id,
+  }).then((result) => {
+    res.redirect("/");
+  });
+});
+
 router.get("/login", (req, res) => {
   res.render("login");
 });
@@ -168,6 +167,15 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.get("/logout", (req, res) => {
+  currUser = {
+    _id: "",
+    username: "",
+    email: "",
+  };
+  res.redirect("/");
 });
 
 module.exports = router;

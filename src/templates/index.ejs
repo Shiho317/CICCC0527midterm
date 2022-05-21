@@ -4,21 +4,24 @@
 
 <% for(const post of model){ %>
 <div class="card p-2 mb-3">
-  <img src="<%= post.image %>" class="card-img-top" alt="post" />
   <div class="card-body">
     <h5 class="card-title"><%= post.title %></h5>
     <p class="card-text"><%= post.contents %></p>
     <p class="card-text">
-      <small class="text-muted">Last updated 3 mins ago</small>
+      <small class="text-muted">
+        <% const ts = post.updatedAt.toString().split(' ') %>
+        <% const time = ts.slice(0, 5).join(' ') %>
+        <%= time %>
+      </small>
     </p>
   </div>
   <div class="d-flex justify-content-between align-items-center px-4">
     <% if(favs.map(fav => fav.id).includes(post._id.valueOf())){ %>
-      <a href="/favorite/<%= post._id %>" class="btn btn-sm">
+      <a href="/deletefav/<%= post._id %>" class="btn btn-sm">
         <i class="bi bi-heart-fill"></i>
       </a>
     <% }else{ %>
-      <a href="#" class="btn btn-sm">
+      <a href="/favorite/<%= post._id %>" class="btn btn-sm">
         <i class="bi bi-heart"></i>
       </a>
     <% } %>
